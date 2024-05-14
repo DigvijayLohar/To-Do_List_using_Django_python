@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Django To-Do list</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-7 col-sm-offset-3">
+      <form action="{% url 'create_todo' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="title">Title:</label>
+          <input type="text" class="form-control" id="title" placeholder="Enter Title" name="title">
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea class="form-control" id="description" name="description"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>SNo.</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for todo in todos %}
+      <tr>
+        <td>{{ forloop.counter}}</td>
+        <td>{{ todo.title }}</td>
+        <td>{{ todo.description }}</td>
+        <td>
+            {% if todo.completed %}
+    <span class="btn btn-sm btn-success">Completed</span>
+{% else %}
+    <a class="btn btn-sm btn-warning" href="{% url 'complete_todo' todo.id %}">Complete</a>
+{% endif %}
+<a class="btn btn-sm btn-danger" href="{% url 'delete_todo' todo.id %}">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+</div>
+
+</body>
+</html>
